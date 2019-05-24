@@ -8,7 +8,7 @@ public class App {
         Object command = new ConvertImageCommand();
         CommandLine commandLine = new CommandLine(command);
 
-        int result = commandLine.execute("");
+        int result = commandLine.execute(args);
         System.exit(result);
     }
 }
