@@ -1,7 +1,9 @@
 package com.github.elementbound.asciima.image2ascii.colors.factory;
 
 import com.github.elementbound.asciima.image2ascii.colors.model.RGBColor;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RGBColorFactory {
     public RGBColor fromARGB(int argb) {
         return new RGBColor(

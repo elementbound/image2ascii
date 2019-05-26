@@ -2,10 +2,12 @@ package com.github.elementbound.asciima.image2ascii.colors.factory;
 
 import com.github.elementbound.asciima.image2ascii.colors.model.HSVColor;
 import com.github.elementbound.asciima.image2ascii.colors.model.RGBColor;
+import org.springframework.stereotype.Component;
 
 import static com.github.elementbound.asciima.image2ascii.util.MathHelper.max;
 import static com.github.elementbound.asciima.image2ascii.util.MathHelper.min;
 
+@Component
 public class HSVColorFactory {
     public HSVColor fromRGB(RGBColor rgb) {
         float minValue = min(rgb.getRed(), rgb.getGreen(), rgb.getBlue());

@@ -1,6 +1,7 @@
 package com.github.elementbound.asciima.image2ascii.command;
 
 import com.github.elementbound.asciima.image2ascii.util.Point2;
+import org.springframework.stereotype.Component;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
 
@@ -9,12 +10,12 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@Component
 @Command(name = "image2ascii", mixinStandardHelpOptions = true)
-public class ConvertImageCommand implements Callable<Integer> {
+public class ConvertImageCommand implements ConsoleCommand {
     @Parameters(index = "0", description = "Input file", paramLabel = "input")
     private Path inputPath;
 
