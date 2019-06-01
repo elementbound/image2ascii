@@ -1,6 +1,6 @@
-package com.github.elementbound.asciima.image2ascii.character.impl;
+package com.github.elementbound.asciima.image2ascii.character.renderer.impl;
 
-import com.github.elementbound.asciima.image2ascii.character.CharacterRenderer;
+import com.github.elementbound.asciima.image2ascii.character.renderer.CharacterRenderer;
 
 import java.awt.Canvas;
 import java.awt.Color;

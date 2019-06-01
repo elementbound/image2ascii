@@ -1,6 +1,6 @@
 package com.github.elementbound.asciima.image2ascii.command;
 
-import com.github.elementbound.asciima.image2ascii.character.CharacterRecognizer;
+import com.github.elementbound.asciima.image2ascii.character.recognizer.CharacterRecognizer;
 import com.github.elementbound.asciima.image2ascii.colors.factory.RGBColorFactory;
 import com.github.elementbound.asciima.image2ascii.colors.finder.PrimaryColorFinder;
 import com.github.elementbound.asciima.image2ascii.colors.model.RGBColor;

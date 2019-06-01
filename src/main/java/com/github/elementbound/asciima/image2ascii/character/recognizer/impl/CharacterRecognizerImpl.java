@@ -1,7 +1,7 @@
-package com.github.elementbound.asciima.image2ascii.character.impl;
+package com.github.elementbound.asciima.image2ascii.character.recognizer.impl;
 
-import com.github.elementbound.asciima.image2ascii.character.CharacterRecognizer;
-import com.github.elementbound.asciima.image2ascii.character.CharacterRenderer;
+import com.github.elementbound.asciima.image2ascii.character.recognizer.CharacterRecognizer;
+import com.github.elementbound.asciima.image2ascii.character.renderer.CharacterRenderer;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -23,9 +23,9 @@ public class CharacterRecognizerImpl implements CharacterRecognizer {
     @Override
     public char recognize(BufferedImage image, int targetColor) {
         return characters.entrySet().stream()
-                .map(entry -> new AbstractMap.SimpleImmutableEntry<>(entry.getKey(), getCharacterWeight(image, targetColor, entry.getValue())))
-                .max(Comparator.comparingDouble(AbstractMap.SimpleImmutableEntry::getValue))
-                .map(AbstractMap.SimpleImmutableEntry::getKey)
+                .map(entry -> createWeightEntry(entry.getKey(), getCharacterWeight(image, targetColor, entry.getValue())))
+                .max(Comparator.comparingDouble(Map.Entry::getValue))
+                .map(Map.Entry::getKey)
                 .orElse(' ');
     }
 
@@ -53,5 +53,9 @@ public class CharacterRecognizerImpl implements CharacterRecognizer {
         }
 
         return hits - misses;
+    }
+
+    private Map.Entry<Character, Double> createWeightEntry(char character, double weight) {
+        return new AbstractMap.SimpleImmutableEntry<>(character, weight);
     }
 }

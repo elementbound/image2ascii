@@ -1,4 +1,4 @@
-package com.github.elementbound.asciima.image2ascii.character;
+package com.github.elementbound.asciima.image2ascii.character.renderer;
 
 import java.awt.image.BufferedImage;
 
