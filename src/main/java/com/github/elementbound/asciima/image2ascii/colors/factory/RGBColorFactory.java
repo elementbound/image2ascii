@@ -12,4 +12,10 @@ public class RGBColorFactory {
                 (argb & 0xFF) / 255f
         );
     }
+
+    public int toARGB(RGBColor color) {
+        return ((int) (color.getRed() * 255)) << 16 |
+                ((int) (color.getGreen() * 255)) << 8 |
+                ((int) (color.getBlue() * 255));
+    }
 }

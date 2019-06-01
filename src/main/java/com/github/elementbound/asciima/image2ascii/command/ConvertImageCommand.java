@@ -1,8 +1,10 @@
 package com.github.elementbound.asciima.image2ascii.command;
 
+import com.github.elementbound.asciima.image2ascii.character.CharacterRecognizer;
+import com.github.elementbound.asciima.image2ascii.colors.factory.RGBColorFactory;
 import com.github.elementbound.asciima.image2ascii.colors.finder.PrimaryColorFinder;
 import com.github.elementbound.asciima.image2ascii.colors.model.RGBColor;
-import com.github.elementbound.asciima.image2ascii.util.Point2;
+import com.github.elementbound.asciima.image2ascii.image.ImageColorMapper;
 import org.springframework.stereotype.Component;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
@@ -11,9 +13,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Component
 @Command(name = "image2ascii", mixinStandardHelpOptions = true)
@@ -22,9 +21,15 @@ public class ConvertImageCommand implements ConsoleCommand {
     private Path inputPath;
 
     private final PrimaryColorFinder asciiPalettePrimaryColorFinder;
+    private final ImageColorMapper imageColorMapper;
+    private final CharacterRecognizer characterRecognizer;
+    private final RGBColorFactory rgbColorFactory;
 
-    public ConvertImageCommand(PrimaryColorFinder asciiPalettePrimaryColorFinder) {
+    public ConvertImageCommand(PrimaryColorFinder asciiPalettePrimaryColorFinder, ImageColorMapper imageColorMapper, CharacterRecognizer characterRecognizer, RGBColorFactory rgbColorFactory) {
         this.asciiPalettePrimaryColorFinder = asciiPalettePrimaryColorFinder;
+        this.imageColorMapper = imageColorMapper;
+        this.characterRecognizer = characterRecognizer;
+        this.rgbColorFactory = rgbColorFactory;
     }
 
     @Override
@@ -37,24 +42,23 @@ public class ConvertImageCommand implements ConsoleCommand {
         int tileCountX = image.getWidth() / tileWidth;
         int tileCountY = image.getHeight() / tileHeight;
 
-        List<RGBColor[]> primaryColorPerTile = IntStream.range(0, tileCountX * tileCountY)
-                .mapToObj(i -> new Point2(i % tileCountX, i / tileCountX))
-                .map(point -> image.getSubimage(point.getX() * tileWidth, point.getY() * tileHeight, tileWidth, tileHeight))
-                .map(tile -> asciiPalettePrimaryColorFinder.findPrimaryColors(tile, 2))
-                .map(primaryColors -> primaryColors.toArray(new RGBColor[2]))
-                .collect(Collectors.toList());
-
         for (int y = 0; y < tileCountY; y++) {
             for (int x = 0; x < tileCountX; x++) {
-                RGBColor[] tileColors = primaryColorPerTile.get(y * tileCountX + x);
-                System.out.printf("\u001B[38;2;%d;%d;%dm\u001B[48;2;%d;%d;%dm#",
+                BufferedImage tile = image.getSubimage(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+                RGBColor[] tileColors = asciiPalettePrimaryColorFinder.findPrimaryColors(tile, 2).toArray(new RGBColor[2]);
+                BufferedImage mappedTile = imageColorMapper.map(tile, tileColors);
+                char character = characterRecognizer.recognize(mappedTile, rgbColorFactory.toARGB(tileColors[1]));
+
+                System.out.printf("\u001B[38;2;%d;%d;%dm\u001B[48;2;%d;%d;%dm%c",
                         (int) (tileColors[1].getRed() * 255),
                         (int) (tileColors[1].getGreen() * 255),
                         (int) (tileColors[1].getBlue() * 255),
 
                         (int) (tileColors[0].getRed() * 255),
                         (int) (tileColors[0].getGreen() * 255),
-                        (int) (tileColors[0].getBlue() * 255));
+                        (int) (tileColors[0].getBlue() * 255),
+
+                        character);
             }
 
             System.out.println("\u001B[0m");

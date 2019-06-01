@@ -29,6 +29,17 @@ public class RGBColorFactoryTest {
         assertThat(actual, is(expected));
     }
 
+    @Test(dataProvider = "argbToRgbProvider")
+    public void fromRGBColorShouldReturnExpected(int expected, RGBColor rgb) {
+        // Given in setup
+
+        // When
+        int actual = underTest.toARGB(rgb);
+
+        // Then
+        assertThat(actual, is(expected));
+    }
+
     @DataProvider
     public Object[][] argbToRgbProvider() {
         return new Object[][] {
