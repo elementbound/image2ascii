@@ -1,8 +1,9 @@
 package com.github.elementbound.asciima.image2ascii.character.config;
 
 import com.github.elementbound.asciima.image2ascii.character.recognizer.CharacterRecognizer;
-import com.github.elementbound.asciima.image2ascii.character.renderer.CharacterRenderer;
 import com.github.elementbound.asciima.image2ascii.character.recognizer.impl.CharacterRecognizerImpl;
+import com.github.elementbound.asciima.image2ascii.character.recognizer.impl.HitMissCharacterWeightFunctionImpl;
+import com.github.elementbound.asciima.image2ascii.character.renderer.CharacterRenderer;
 import com.github.elementbound.asciima.image2ascii.character.renderer.impl.CharacterRendererImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +36,6 @@ public class CharacterConfig {
 
     @Bean
     public CharacterRecognizer characterRecognizer() {
-        return new CharacterRecognizerImpl(RECOGNIZED_CHARACTERS, characterRenderer());
+        return new CharacterRecognizerImpl(RECOGNIZED_CHARACTERS, characterRenderer(), new HitMissCharacterWeightFunctionImpl());
     }
 }
