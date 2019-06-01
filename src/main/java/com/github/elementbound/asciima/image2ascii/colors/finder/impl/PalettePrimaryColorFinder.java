@@ -1,5 +1,6 @@
 package com.github.elementbound.asciima.image2ascii.colors.finder.impl;
 
+import com.github.elementbound.asciima.image2ascii.colors.ColorDistanceFunction;
 import com.github.elementbound.asciima.image2ascii.colors.factory.RGBColorFactory;
 import com.github.elementbound.asciima.image2ascii.colors.finder.PrimaryColorFinder;
 import com.github.elementbound.asciima.image2ascii.colors.model.RGBColor;
@@ -14,10 +15,12 @@ import static com.github.elementbound.asciima.image2ascii.image.ImageIterator.as
 public class PalettePrimaryColorFinder implements PrimaryColorFinder {
     private final RGBColorFactory rgbColorFactory;
     private final List<RGBColor> palette;
+    private final ColorDistanceFunction colorDistanceFunction;
 
-    public PalettePrimaryColorFinder(RGBColorFactory rgbColorFactory, List<RGBColor> palette) {
+    public PalettePrimaryColorFinder(RGBColorFactory rgbColorFactory, List<RGBColor> palette, ColorDistanceFunction colorDistanceFunction) {
         this.rgbColorFactory = rgbColorFactory;
         this.palette = palette;
+        this.colorDistanceFunction = colorDistanceFunction;
     }
 
     @Override
@@ -29,7 +32,7 @@ public class PalettePrimaryColorFinder implements PrimaryColorFinder {
             for (int argb : asIterable(image)) {
                 RGBColor color = rgbColorFactory.fromARGB(argb);
 
-                double distance = getColorDistance(paletteColor, color);
+                double distance = colorDistanceFunction.getDistance(paletteColor, color);
                 double weight = paletteColorWeights.get(paletteColor) + distance;
 
                 paletteColorWeights.put(paletteColor, weight);
@@ -41,14 +44,5 @@ public class PalettePrimaryColorFinder implements PrimaryColorFinder {
                 .limit(count)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
-    }
-
-    private double getColorDistance(RGBColor a, RGBColor b) {
-        // Simple pythagorian distance for now
-        RGBColor delta = new RGBColor(a.getRed() - b.getRed(), a.getGreen() - b.getGreen(), a.getBlue() - b.getBlue());
-
-        return Math.sqrt(delta.getRed() * delta.getRed() +
-                delta.getGreen() * delta.getGreen() +
-                delta.getBlue() * delta.getBlue());
     }
 }
