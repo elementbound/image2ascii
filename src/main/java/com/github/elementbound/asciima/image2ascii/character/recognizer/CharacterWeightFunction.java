@@ -4,5 +4,5 @@ import java.awt.image.BufferedImage;
 
 @FunctionalInterface
 public interface CharacterWeightFunction {
-    double getWeight(BufferedImage image, int targetColor, BufferedImage characterImage);
+    double getWeight(BufferedImage sourceImage, int targetColor, BufferedImage characterImage);
 }

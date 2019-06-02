@@ -7,16 +7,17 @@ import java.awt.image.BufferedImage;
 
 public class HitMissCharacterWeightFunctionImpl implements CharacterWeightFunction {
     @Override
-    public double getWeight(BufferedImage image, int targetColor, BufferedImage characterImage) {
+    public double getWeight(BufferedImage sourceImage, int targetColor, BufferedImage characterImage) {
         int hits = 0;
         int misses = 0;
+        double pixelCount = sourceImage.getWidth() * sourceImage.getHeight();
 
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                int color = image.getRGB(x, y);
+        for (int y = 0; y < sourceImage.getHeight(); y++) {
+            for (int x = 0; x < sourceImage.getWidth(); x++) {
+                int color = sourceImage.getRGB(x, y);
 
-                float u = x / (float) image.getWidth();
-                float v = y / (float) image.getHeight();
+                float u = x / (float) sourceImage.getWidth();
+                float v = y / (float) sourceImage.getHeight();
                 int remappedX = (int) (u * characterImage.getWidth());
                 int remappedY = (int) (v * characterImage.getHeight());
 
@@ -30,6 +31,6 @@ public class HitMissCharacterWeightFunctionImpl implements CharacterWeightFuncti
             }
         }
 
-        return hits - misses;
+        return (hits - misses) / pixelCount;
     }
 }
