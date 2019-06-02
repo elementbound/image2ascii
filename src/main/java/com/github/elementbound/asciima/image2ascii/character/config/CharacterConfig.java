@@ -1,5 +1,7 @@
 package com.github.elementbound.asciima.image2ascii.character.config;
 
+import com.github.elementbound.asciima.image2ascii.character.encoder.CharacterEncoder;
+import com.github.elementbound.asciima.image2ascii.character.encoder.impl.BasicPaletteCharacterEncoderImpl;
 import com.github.elementbound.asciima.image2ascii.character.recognizer.CharacterRecognizer;
 import com.github.elementbound.asciima.image2ascii.character.recognizer.impl.CharacterRecognizerImpl;
 import com.github.elementbound.asciima.image2ascii.character.recognizer.impl.HitMissCharacterWeightFunctionImpl;
@@ -37,5 +39,10 @@ public class CharacterConfig {
     @Bean
     public CharacterRecognizer characterRecognizer() {
         return new CharacterRecognizerImpl(RECOGNIZED_CHARACTERS, characterRenderer(), new HitMissCharacterWeightFunctionImpl());
+    }
+
+    @Bean
+    public CharacterEncoder characterEncoder() {
+        return new BasicPaletteCharacterEncoderImpl();
     }
 }

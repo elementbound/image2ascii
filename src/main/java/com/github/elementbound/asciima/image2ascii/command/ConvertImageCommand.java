@@ -1,5 +1,6 @@
 package com.github.elementbound.asciima.image2ascii.command;
 
+import com.github.elementbound.asciima.image2ascii.character.encoder.CharacterEncoder;
 import com.github.elementbound.asciima.image2ascii.character.recognizer.CharacterRecognizer;
 import com.github.elementbound.asciima.image2ascii.colors.factory.RGBColorFactory;
 import com.github.elementbound.asciima.image2ascii.colors.finder.PrimaryColorFinder;
@@ -24,12 +25,14 @@ public class ConvertImageCommand implements ConsoleCommand {
     private final ImageColorMapper imageColorMapper;
     private final CharacterRecognizer characterRecognizer;
     private final RGBColorFactory rgbColorFactory;
+    private final CharacterEncoder characterEncoder;
 
-    public ConvertImageCommand(PrimaryColorFinder asciiPalettePrimaryColorFinder, ImageColorMapper imageColorMapper, CharacterRecognizer characterRecognizer, RGBColorFactory rgbColorFactory) {
+    public ConvertImageCommand(PrimaryColorFinder asciiPalettePrimaryColorFinder, ImageColorMapper imageColorMapper, CharacterRecognizer characterRecognizer, RGBColorFactory rgbColorFactory, CharacterEncoder characterEncoder) {
         this.asciiPalettePrimaryColorFinder = asciiPalettePrimaryColorFinder;
         this.imageColorMapper = imageColorMapper;
         this.characterRecognizer = characterRecognizer;
         this.rgbColorFactory = rgbColorFactory;
+        this.characterEncoder = characterEncoder;
     }
 
     @Override
@@ -49,16 +52,7 @@ public class ConvertImageCommand implements ConsoleCommand {
                 BufferedImage mappedTile = imageColorMapper.map(tile, tileColors);
                 char character = characterRecognizer.recognize(mappedTile, rgbColorFactory.toARGB(tileColors[1]));
 
-                System.out.printf("\u001B[38;2;%d;%d;%dm\u001B[48;2;%d;%d;%dm%c",
-                        (int) (tileColors[1].getRed() * 255),
-                        (int) (tileColors[1].getGreen() * 255),
-                        (int) (tileColors[1].getBlue() * 255),
-
-                        (int) (tileColors[0].getRed() * 255),
-                        (int) (tileColors[0].getGreen() * 255),
-                        (int) (tileColors[0].getBlue() * 255),
-
-                        character);
+                System.out.print(characterEncoder.encode(character, tileColors[1], tileColors[0]));
             }
 
             System.out.println("\u001B[0m");

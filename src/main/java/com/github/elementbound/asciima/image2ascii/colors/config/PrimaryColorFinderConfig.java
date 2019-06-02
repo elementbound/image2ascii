@@ -1,7 +1,7 @@
 package com.github.elementbound.asciima.image2ascii.colors.config;
 
 import com.github.elementbound.asciima.image2ascii.colors.ColorDistanceFunction;
-import com.github.elementbound.asciima.image2ascii.colors.config.palette.Ascii256Palette;
+import com.github.elementbound.asciima.image2ascii.colors.config.palette.Ascii16Palette;
 import com.github.elementbound.asciima.image2ascii.colors.factory.RGBColorFactory;
 import com.github.elementbound.asciima.image2ascii.colors.finder.PrimaryColorFinder;
 import com.github.elementbound.asciima.image2ascii.colors.finder.impl.PalettePrimaryColorFinder;
@@ -31,7 +31,7 @@ public class PrimaryColorFinderConfig {
 
     @Bean
     public PrimaryColorFinder asciiPalettePrimaryColorFinder() {
-        return new PalettePrimaryColorFinder(rgbColorFactory, Ascii256Palette.colors, defaultColorDistance());
+        return new PalettePrimaryColorFinder(rgbColorFactory, Ascii16Palette.colors, defaultColorDistance());
     }
 
     @Bean

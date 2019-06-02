@@ -8,21 +8,21 @@ import java.util.stream.Stream;
 
 public class Ascii16Palette {
     public static List<RGBColor> colors = Stream.of(
-            new RGBColor(0.00f, 0.00f, 0.00f),
-            new RGBColor(0.66f, 0.00f, 0.00f),
-            new RGBColor(0.00f, 0.66f, 0.00f),
-            new RGBColor(0.66f, 0.33f, 0.00f),
-            new RGBColor(0.00f, 0.00f, 0.66f),
-            new RGBColor(0.66f, 0.00f, 0.66f),
-            new RGBColor(0.00f, 0.66f, 0.66f),
-            new RGBColor(0.66f, 0.66f, 0.66f),
-            new RGBColor(0.33f, 0.33f, 0.33f),
-            new RGBColor(1.00f, 0.33f, 0.33f),
-            new RGBColor(0.33f, 1.00f, 0.33f),
-            new RGBColor(1.00f, 1.00f, 0.33f),
-            new RGBColor(0.33f, 0.33f, 1.00f),
-            new RGBColor(1.00f, 0.33f, 1.00f),
-            new RGBColor(0.33f, 1.00f, 1.00f),
-            new RGBColor(1.00f, 1.00f, 1.00f)
+            new RGBColor(0 / 255.f, 0 / 255.f, 0 / 255.f),
+            new RGBColor(170 / 255.f, 0 / 255.f, 0 / 255.f),
+            new RGBColor(0 / 255.f, 170 / 255.f, 0 / 255.f),
+            new RGBColor(170 / 255.f, 85 / 255.f, 0 / 255.f),
+            new RGBColor(0 / 255.f, 0 / 255.f, 170 / 255.f),
+            new RGBColor(170 / 255.f, 0 / 255.f, 170 / 255.f),
+            new RGBColor(0 / 255.f, 170 / 255.f, 170 / 255.f),
+            new RGBColor(170 / 255.f, 170 / 255.f, 170 / 255.f),
+            new RGBColor(85 / 255.f, 85 / 255.f, 85 / 255.f),
+            new RGBColor(255 / 255.f, 85 / 255.f, 85 / 255.f),
+            new RGBColor(85 / 255.f, 255 / 255.f, 85 / 255.f),
+            new RGBColor(255 / 255.f, 255 / 255.f, 85 / 255.f),
+            new RGBColor(85 / 255.f, 85 / 255.f, 255 / 255.f),
+            new RGBColor(255 / 255.f, 85 / 255.f, 255 / 255.f),
+            new RGBColor(85 / 255.f, 255 / 255.f, 255 / 255.f),
+            new RGBColor(255 / 255.f, 255 / 255.f, 255 / 255.f)
     ).collect(Collectors.toList());
 }
