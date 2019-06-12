@@ -15,17 +15,35 @@ import com.github.elementbound.asciima.image2ascii.character.recognizer.Characte
 import com.github.elementbound.asciima.image2ascii.colors.factory.RGBColorFactory;
 import com.github.elementbound.asciima.image2ascii.colors.finder.PrimaryColorFinder;
 import com.github.elementbound.asciima.image2ascii.colors.model.RGBColor;
+import com.github.elementbound.asciima.image2ascii.command.model.CharacterSet;
+import com.github.elementbound.asciima.image2ascii.command.model.CharacterWeightFunctionType;
+import com.github.elementbound.asciima.image2ascii.command.model.ColorMapperType;
+import com.github.elementbound.asciima.image2ascii.command.model.Palette;
 import com.github.elementbound.asciima.image2ascii.image.ImageColorMapper;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
 @Component
 @Command(name = "image2ascii", mixinStandardHelpOptions = true)
 public class ConvertImageCommand implements ConsoleCommand {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConvertImageCommand.class);
+    private static final String POSSIBLE_VALUES = "Possible values: ${COMPLETION-CANDIDATES}";
 
     @Parameters(index = "0", description = "Input file", paramLabel = "input")
     private Path inputPath;
+
+    @Option(names = {"-cs", "--characterSet"}, description = POSSIBLE_VALUES)
+    private CharacterSet characterSet = CharacterSet.GRADIENT;
+
+    @Option(names = {"-cw", "--characterWeight"}, description = POSSIBLE_VALUES)
+    private CharacterWeightFunctionType characterWeightFunctionType = CharacterWeightFunctionType.GRADIENT;
+
+    @Option(names = {"-cm", "--colorMapper"}, description = POSSIBLE_VALUES)
+    private ColorMapperType colorMapperType = ColorMapperType.NEAREST;
+
+    @Option(names = {"-p", "--palette"}, description = POSSIBLE_VALUES)
+    private Palette palette = Palette.ASCII_16;
 
     private final PrimaryColorFinder asciiPalettePrimaryColorFinder;
     private final ImageColorMapper imageColorMapper;
