@@ -4,12 +4,10 @@ import com.github.elementbound.asciima.image2ascii.colors.factory.RGBColorFactor
 import com.github.elementbound.asciima.image2ascii.colors.mapper.ColorMapper;
 import com.github.elementbound.asciima.image2ascii.colors.mapper.ColorMapperFactory;
 import com.github.elementbound.asciima.image2ascii.colors.model.RGBColor;
-import org.springframework.stereotype.Component;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-@Component
 public class ImageColorMapper {
     private final ColorMapperFactory colorMapperFactory;
     private final RGBColorFactory rgbColorFactory;

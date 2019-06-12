@@ -29,7 +29,7 @@ public class FuzzyColorMapper implements ColorMapper {
     public RGBColor map(RGBColor color) {
         Map<RGBColor, Double> colorWeights = new HashMap<>();
         for (RGBColor paletteColor : colors) {
-            colorWeights.put(paletteColor, 1.0 / (1.0 + colorDistanceFunction.getDistance(paletteColor, color)));
+            colorWeights.put(paletteColor, 1.0 / colorDistanceFunction.getDistance(paletteColor, color));
         }
 
         double weightSum = colorWeights.values().stream()
