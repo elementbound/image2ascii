@@ -1,26 +1,25 @@
 package com.github.elementbound.asciima.image2ascii.character.config;
 
-import com.github.elementbound.asciima.image2ascii.character.encoder.CharacterEncoder;
-import com.github.elementbound.asciima.image2ascii.character.encoder.impl.BasicPaletteCharacterEncoderImpl;
-import com.github.elementbound.asciima.image2ascii.character.recognizer.CharacterRecognizer;
-import com.github.elementbound.asciima.image2ascii.character.recognizer.impl.CharacterRecognizerImpl;
-import com.github.elementbound.asciima.image2ascii.character.recognizer.impl.HitMissCharacterWeightFunctionImpl;
-import com.github.elementbound.asciima.image2ascii.character.renderer.CharacterRenderer;
-import com.github.elementbound.asciima.image2ascii.character.renderer.impl.CharacterRendererImpl;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-import java.awt.Font;
+import java.awt.*;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.github.elementbound.asciima.image2ascii.character.encoder.CharacterEncoder;
+import com.github.elementbound.asciima.image2ascii.character.encoder.impl.BasicPaletteCharacterEncoderImpl;
+import com.github.elementbound.asciima.image2ascii.character.recognizer.CharacterRecognizer;
+import com.github.elementbound.asciima.image2ascii.character.recognizer.impl.CharacterRecognizerImpl;
+import com.github.elementbound.asciima.image2ascii.character.recognizer.impl.GradientCharacterWeightFunctionImpl;
+import com.github.elementbound.asciima.image2ascii.character.renderer.CharacterRenderer;
+import com.github.elementbound.asciima.image2ascii.character.renderer.impl.CharacterRendererImpl;
+
 @Configuration
 public class CharacterConfig {
-    private static final String CHARACTER_GRADIENT = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ";
-    private static final String CHARACTER_BORDERS = "|-_+/\\";
-
-    private static final String CHARACTER_ALL = CHARACTER_BORDERS + CHARACTER_GRADIENT;
+    private static final String CHARACTER_GRADIENT = " .:-=+*#%@";
+    private static final String CHARACTER_ALL = CHARACTER_GRADIENT;
 
     private static final Set<Character> RECOGNIZED_CHARACTERS = IntStream.range(0, CHARACTER_ALL.length())
             .mapToObj(CHARACTER_ALL::charAt)
@@ -38,7 +37,7 @@ public class CharacterConfig {
 
     @Bean
     public CharacterRecognizer characterRecognizer() {
-        return new CharacterRecognizerImpl(RECOGNIZED_CHARACTERS, characterRenderer(), new HitMissCharacterWeightFunctionImpl());
+        return new CharacterRecognizerImpl(RECOGNIZED_CHARACTERS, characterRenderer(), new GradientCharacterWeightFunctionImpl());
     }
 
     @Bean

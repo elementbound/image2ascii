@@ -1,12 +1,15 @@
 package com.github.elementbound.asciima.image2ascii.colors.factory;
 
-import com.github.elementbound.asciima.image2ascii.colors.model.RGBColor;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import java.awt.*;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import com.github.elementbound.asciima.image2ascii.colors.model.RGBColor;
 
 public class RGBColorFactoryTest {
     private static final float HALF = 128.0f / 255.0f;
@@ -43,15 +46,15 @@ public class RGBColorFactoryTest {
     @DataProvider
     public Object[][] argbToRgbProvider() {
         return new Object[][] {
-                {0x00FF0000, new RGBColor(1f, 0f, 0f)}, // red
-                {0x0000FF00, new RGBColor(0f, 1f, 0f)}, // green
-                {0x000000FF, new RGBColor(0f, 0f, 1f)}, // blue
+                {new Color(255,   0,   0).getRGB(), new RGBColor(1f, 0f, 0f)}, // red
+                {new Color(  0, 255,   0).getRGB(), new RGBColor(0f, 1f, 0f)}, // green
+                {new Color(  0,   0, 255).getRGB(), new RGBColor(0f, 0f, 1f)}, // blue
 
-                {0x0000FFFF, new RGBColor(0f, 1f, 1f)}, // cyan
-                {0x00FF00FF, new RGBColor(1f, 0f, 1f)}, // magenta
-                {0x0000FFFF, new RGBColor(0f, 1f, 1f)}, // yellow
+                {new Color(  0, 255, 255).getRGB(), new RGBColor(0f, 1f, 1f)}, // cyan
+                {new Color(255,   0, 255).getRGB(), new RGBColor(1f, 0f, 1f)}, // magenta
+                {new Color(255, 255,   0).getRGB(), new RGBColor(1f, 1f, 0f)}, // yellow
 
-                {0x00808080, new RGBColor(HALF, HALF, HALF)} // gray
+                {new Color(128, 128, 128).getRGB(), new RGBColor(HALF, HALF, HALF)} // gray
         };
     }
 }

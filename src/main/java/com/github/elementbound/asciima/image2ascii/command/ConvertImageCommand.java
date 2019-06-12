@@ -1,23 +1,29 @@
 package com.github.elementbound.asciima.image2ascii.command;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.file.Path;
+
+import javax.imageio.ImageIO;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
 import com.github.elementbound.asciima.image2ascii.character.encoder.CharacterEncoder;
 import com.github.elementbound.asciima.image2ascii.character.recognizer.CharacterRecognizer;
 import com.github.elementbound.asciima.image2ascii.colors.factory.RGBColorFactory;
 import com.github.elementbound.asciima.image2ascii.colors.finder.PrimaryColorFinder;
 import com.github.elementbound.asciima.image2ascii.colors.model.RGBColor;
 import com.github.elementbound.asciima.image2ascii.image.ImageColorMapper;
-import org.springframework.stereotype.Component;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.nio.file.Path;
 
 @Component
 @Command(name = "image2ascii", mixinStandardHelpOptions = true)
 public class ConvertImageCommand implements ConsoleCommand {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConvertImageCommand.class);
+
     @Parameters(index = "0", description = "Input file", paramLabel = "input")
     private Path inputPath;
 
@@ -38,6 +44,7 @@ public class ConvertImageCommand implements ConsoleCommand {
     @Override
     public Integer call() throws IOException {
         BufferedImage image = ImageIO.read(inputPath.toFile());
+        StringBuilder result = new StringBuilder();
 
         int tileWidth = 6;
         int tileHeight = 10;
@@ -52,11 +59,14 @@ public class ConvertImageCommand implements ConsoleCommand {
                 BufferedImage mappedTile = imageColorMapper.map(tile, tileColors);
                 char character = characterRecognizer.recognize(mappedTile, rgbColorFactory.toARGB(tileColors[1]));
 
-                System.out.print(characterEncoder.encode(character, tileColors[1], tileColors[0]));
+                result.append(characterEncoder.encode(character, tileColors[1], tileColors[0]));
             }
 
-            System.out.println("\u001B[0m");
+            LOGGER.info("Progress: {}/{} = {}%", y, tileCountY, y*100 / tileCountY);
+            result.append("\u001B[0m\n");
         }
+
+        System.out.print(result.toString());
 
         return 0;
     }
