@@ -1,11 +1,14 @@
 package com.github.elementbound.asciima.image2ascii.character.encoder.impl;
 
-import com.github.elementbound.asciima.image2ascii.character.encoder.CharacterEncoder;
-import com.github.elementbound.asciima.image2ascii.colors.model.RGBColor;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
+import com.github.elementbound.asciima.image2ascii.character.encoder.CharacterEncoder;
+import com.github.elementbound.asciima.image2ascii.colors.model.RGBColor;
+
+@Component("basicCharacterEncoder")
 public class BasicPaletteCharacterEncoderImpl implements CharacterEncoder {
     private static final Map<RGBColor, Integer> BACKGROUND_INDICES = new HashMap<>();
     private static final Map<RGBColor, Integer> FOREGROUND_INDICES = new HashMap<>();

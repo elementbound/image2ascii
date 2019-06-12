@@ -8,7 +8,7 @@ import com.github.elementbound.asciima.image2ascii.colors.model.RGBColor;
 
 public enum Palette {
     ASCII_16(Ascii16Palette.colors),
-    ASCII_256(Ascii256Palette.colors);;
+    ASCII_256(Ascii256Palette.colors);
 
     private final List<RGBColor> palette;
 
