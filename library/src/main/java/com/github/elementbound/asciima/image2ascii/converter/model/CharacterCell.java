@@ -1,25 +1,26 @@
 package com.github.elementbound.asciima.image2ascii.converter.model;
 
+import com.github.elementbound.asciima.image2ascii.colors.model.RGBColor;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class CharacterCell {
-    private final int backgroundColor;
-    private final int foregroundColor;
+    private final RGBColor backgroundColor;
+    private final RGBColor foregroundColor;
     private final char character;
 
-    public CharacterCell(int backgroundColor, int foregroundColor, char character) {
+    public CharacterCell(RGBColor backgroundColor, RGBColor foregroundColor, char character) {
         this.backgroundColor = backgroundColor;
         this.foregroundColor = foregroundColor;
         this.character = character;
     }
 
-    public int getBackgroundColor() {
+    public RGBColor getBackgroundColor() {
         return backgroundColor;
     }
 
-    public int getForegroundColor() {
+    public RGBColor getForegroundColor() {
         return foregroundColor;
     }
 
@@ -40,9 +41,9 @@ public class CharacterCell {
         CharacterCell that = (CharacterCell) o;
 
         return new EqualsBuilder()
+                .append(character, that.character)
                 .append(backgroundColor, that.backgroundColor)
                 .append(foregroundColor, that.foregroundColor)
-                .append(character, that.character)
                 .isEquals();
     }
 

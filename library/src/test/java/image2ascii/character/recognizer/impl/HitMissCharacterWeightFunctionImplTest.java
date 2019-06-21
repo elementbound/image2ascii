@@ -1,5 +1,6 @@
-package com.github.elementbound.asciima.image2ascii.character.recognizer.impl;
+package image2ascii.character.recognizer.impl;
 
+import com.github.elementbound.asciima.image2ascii.character.recognizer.impl.HitMissCharacterWeightFunctionImpl;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

@@ -48,14 +48,16 @@ public class ImageConverterImpl implements ImageConverter {
 
     private CharacterCell processTile(BufferedImage image, ImageConverterContext context, int tileWidth, int tileHeight, int x, int y) {
         BufferedImage tile = image.getSubimage(x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+
         RGBColor[] tileColors = context.getPrimaryColorFinder().findPrimaryColors(tile, 2).toArray(new RGBColor[2]);
+        RGBColor backgroundColor = tileColors[0];
+        RGBColor foregroundColor = tileColors[1];
+
         BufferedImage mappedTile = context.getImageColorMapper().map(tile, tileColors);
-        char character = context.getCharacterRecognizer().recognize(mappedTile, rgbColorFactory.toARGB(tileColors[1]));
 
-        int backgroundArgb = rgbColorFactory.toARGB(tileColors[0]);
-        int foregroundArgb = rgbColorFactory.toARGB(tileColors[1]);
+        char character = context.getCharacterRecognizer().recognize(mappedTile, rgbColorFactory.toARGB(foregroundColor));
 
-        return new CharacterCell(backgroundArgb, foregroundArgb, character);
+        return new CharacterCell(backgroundColor, foregroundColor, character);
     }
 
     private BiFunction<Integer, Integer, CharacterCell> curryProcessTile(BufferedImage image, ImageConverterContext context, int tileWidth, int tileHeight) {

@@ -1,5 +1,6 @@
-package com.github.elementbound.asciima.image2ascii.colors.factory;
+package image2ascii.colors.factory;
 
+import com.github.elementbound.asciima.image2ascii.colors.factory.HSVColorFactory;
 import com.github.elementbound.asciima.image2ascii.colors.model.HSVColor;
 import com.github.elementbound.asciima.image2ascii.colors.model.RGBColor;
 import org.testng.annotations.BeforeMethod;
