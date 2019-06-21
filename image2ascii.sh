@@ -1,2 +1,2 @@
 #!/bin/sh
-java -jar target/image2ascii-1.0-SNAPSHOT.jar "$@"
+java -jar cli/target/image2ascii-cli-1.0-SNAPSHOT.jar "$@"
