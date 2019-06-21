@@ -15,7 +15,11 @@ import java.util.stream.IntStream;
 
 @Component
 public class ImageConverterContextFactory {
-    private RGBColorFactory rgbColorFactory;
+    private final RGBColorFactory rgbColorFactory;
+
+    public ImageConverterContextFactory(RGBColorFactory rgbColorFactory) {
+        this.rgbColorFactory = rgbColorFactory;
+    }
 
     public ImageConverterContext createContext(ImageConverterConfiguration configuration) {
         PalettePrimaryColorFinder primaryColorFinder = new PalettePrimaryColorFinder(rgbColorFactory, configuration.getPalette(), configuration.getColorDistanceFunction());

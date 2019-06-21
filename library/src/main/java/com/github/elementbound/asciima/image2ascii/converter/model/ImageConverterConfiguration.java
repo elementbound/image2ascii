@@ -14,7 +14,6 @@ public class ImageConverterConfiguration {
     private final String characterSet;
     private final Font font;
     private final CharacterWeightFunction characterWeightFunction;
-
     private final ColorDistanceFunction colorDistanceFunction;
 
     public ImageConverterConfiguration(Builder builder) {

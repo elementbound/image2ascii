@@ -41,7 +41,6 @@ public class ImageConverterImpl implements ImageConverter {
         BiFunction<Integer, Integer, CharacterCell> tileProcessor = curryProcessTile(image, context, tileWidth, tileHeight);
 
         return IntStream.range(0, tileCountY)
-                .parallel()
                 .mapToObj(row -> ImmutablePair.of(row, IntStream.range(0, tileCountX)))
                 .flatMap(pair -> pair.getRight().mapToObj(x -> tileProcessor.apply(x, pair.getLeft())))
                 .collect(Collectors.toList());
