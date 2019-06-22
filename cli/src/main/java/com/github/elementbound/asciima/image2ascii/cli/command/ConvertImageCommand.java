@@ -59,12 +59,28 @@ public class ConvertImageCommand implements ConsoleCommand {
 
         Grid<CharacterCell> convertedImage = imageConverter.convert(image, buildConfiguration());
 
-        String result = String.join("", convertedImage.cells().stream()
-                .map(cell -> Cell.of(cell, encodeCharacter(cell.getValue(), palette.getCharacterEncoder())))
-                .map(cell -> appendNewline(cell, convertedImage.getWidth()))
-                .collect(Grid.collector()).values());
+        StringBuilder result = new StringBuilder();
 
-        System.out.println(result);
+        String formatString = "";
+        CharacterEncoder characterEncoder = palette.getCharacterEncoder();
+        for (int y = 0; y < convertedImage.getHeight(); y++) {
+            for (int x = 0; x < convertedImage.getWidth(); x++) {
+                CharacterCell characterCell = convertedImage.get(x, y);
+
+                String newFormatString = characterEncoder.getFormatString(characterCell);
+                if (!formatString.equals(newFormatString)) {
+                    formatString = newFormatString;
+                    result.append(characterEncoder.encode(characterCell));
+                } else {
+                    result.append(characterCell.getCharacter());
+                }
+            }
+
+            result.append(RESET_NEWLINE);
+            result.append(formatString);
+        }
+
+        System.out.print(result.toString() + RESET_NEWLINE);
 
         return 0;
     }
@@ -81,7 +97,7 @@ public class ConvertImageCommand implements ConsoleCommand {
     }
 
     private String encodeCharacter(CharacterCell cell, CharacterEncoder characterEncoder) {
-        return characterEncoder.encode(cell.getCharacter(), cell.getForegroundColor(), cell.getBackgroundColor());
+        return characterEncoder.encode(cell);
     }
 
     private Cell<String> appendNewline(Cell<String> cell, int lineLength) {

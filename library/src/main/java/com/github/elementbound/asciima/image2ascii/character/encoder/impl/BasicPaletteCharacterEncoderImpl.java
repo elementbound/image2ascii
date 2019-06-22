@@ -1,12 +1,12 @@
 package com.github.elementbound.asciima.image2ascii.character.encoder.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.github.elementbound.asciima.image2ascii.character.encoder.CharacterEncoder;
 import com.github.elementbound.asciima.image2ascii.colors.model.RGBColor;
+import com.github.elementbound.asciima.image2ascii.converter.model.CharacterCell;
 import org.springframework.stereotype.Component;
 
-import com.github.elementbound.asciima.image2ascii.character.encoder.CharacterEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component("basicCharacterEncoder")
 public class BasicPaletteCharacterEncoderImpl implements CharacterEncoder {
@@ -37,14 +37,13 @@ public class BasicPaletteCharacterEncoderImpl implements CharacterEncoder {
     }
 
     @Override
-    public String encode(char character, RGBColor foregroundColor, RGBColor backgroundColor) {
-        int foregroundIndex = FOREGROUND_INDICES.getOrDefault(foregroundColor, DEFAULT_FOREGROUND_INDEX);
-        int backgroundIndex = BACKGROUND_INDICES.getOrDefault(backgroundColor, DEFAULT_BACKGROUND_INDEX);
+    public String getFormatString(CharacterCell cell) {
+        int foregroundIndex = FOREGROUND_INDICES.getOrDefault(cell.getForegroundColor(), DEFAULT_FOREGROUND_INDEX);
+        int backgroundIndex = BACKGROUND_INDICES.getOrDefault(cell.getBackgroundColor(), DEFAULT_BACKGROUND_INDEX);
 
-        return String.format("\u001B[%d;%dm%c",
+        return String.format("\u001B[%d;%dm",
                 foregroundIndex,
-                backgroundIndex,
-                character
+                backgroundIndex
         );
     }
 

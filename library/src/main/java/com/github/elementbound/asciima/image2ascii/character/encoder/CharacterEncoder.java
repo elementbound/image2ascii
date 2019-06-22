@@ -1,7 +1,11 @@
 package com.github.elementbound.asciima.image2ascii.character.encoder;
 
-import com.github.elementbound.asciima.image2ascii.colors.model.RGBColor;
+import com.github.elementbound.asciima.image2ascii.converter.model.CharacterCell;
 
 public interface CharacterEncoder {
-    String encode(char character, RGBColor foregroundColor, RGBColor backgroundColor);
+    String getFormatString(CharacterCell cell);
+
+    default String encode(CharacterCell cell) {
+        return getFormatString(cell) + cell.getCharacter();
+    }
 }
