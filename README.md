@@ -50,3 +50,7 @@ Usage: image2ascii [-hV] [-cm=<colorMapperType>] [-cs=<characterSet>]
   -V, --version             Print version information and exit.
 
 ```
+
+## License ##
+
+See [LICENSE](LICENSE)
