@@ -8,6 +8,8 @@ import com.github.elementbound.asciima.image2ascii.colors.ColorDistanceFunction;
 import com.github.elementbound.asciima.image2ascii.converter.ImageConverter;
 import com.github.elementbound.asciima.image2ascii.converter.model.CharacterCell;
 import com.github.elementbound.asciima.image2ascii.converter.model.ImageConverterConfiguration;
+import com.github.elementbound.asciima.image2ascii.grid.Cell;
+import com.github.elementbound.asciima.image2ascii.grid.Grid;
 import org.springframework.stereotype.Component;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -18,10 +20,9 @@ import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.stream.Collectors;
 
 @Component
-@Command(name = "com/github/elementbound/asciima/image2ascii", mixinStandardHelpOptions = true)
+@Command(name = "image2ascii", mixinStandardHelpOptions = true)
 public class ConvertImageCommand implements ConsoleCommand {
     private static final String POSSIBLE_VALUES = "Possible values: ${COMPLETION-CANDIDATES}";
 
@@ -52,10 +53,13 @@ public class ConvertImageCommand implements ConsoleCommand {
     public Integer call() throws IOException {
         BufferedImage image = ImageIO.read(inputPath.toFile());
 
-        String result = imageConverter.convert(image, buildConfiguration()).stream()
-                .map(CharacterCell::getCharacter)
-                .map(String::valueOf)
-                .collect(Collectors.joining());
+        Grid<CharacterCell> convertedImage = imageConverter.convert(image, buildConfiguration());
+
+        String result = String.join("", convertedImage.cells().stream()
+                .map(cell -> Cell.of(cell, cell.getValue().getCharacter()))
+                .map(cell -> Cell.of(cell, String.valueOf(cell.getValue())))
+                .map(cell -> Cell.of(cell, cell.getValue() + ((cell.getX() == convertedImage.getWidth() - 1) ? "\n" : "")))
+                .collect(Grid.collector()).values());
 
         System.out.println(result);
 

@@ -27,7 +27,7 @@ public class Cell<T> {
         return value;
     }
 
-    public static <T> Cell<T> of(Cell<T> cell, T value) {
+    public static <U> Cell<U> of(Cell<?> cell, U value) {
         return new Cell<>(
                 cell.getX(),
                 cell.getY(),
