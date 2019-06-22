@@ -1,5 +1,6 @@
 package com.github.elementbound.asciima.image2ascii.cli.command;
 
+import com.github.elementbound.asciima.image2ascii.character.encoder.CharacterEncoder;
 import com.github.elementbound.asciima.image2ascii.cli.command.model.CharacterSet;
 import com.github.elementbound.asciima.image2ascii.cli.command.model.CharacterWeightFunctionType;
 import com.github.elementbound.asciima.image2ascii.cli.command.model.ColorMapperType;
@@ -25,6 +26,9 @@ import java.nio.file.Path;
 @Command(name = "image2ascii", mixinStandardHelpOptions = true)
 public class ConvertImageCommand implements ConsoleCommand {
     private static final String POSSIBLE_VALUES = "Possible values: ${COMPLETION-CANDIDATES}";
+
+    private static final String RESET_STYLE = "\u001B[0m";
+    private static final String RESET_NEWLINE = RESET_STYLE + "\n";
 
     @Parameters(index = "0", description = "Input file", paramLabel = "input")
     private Path inputPath;
@@ -56,9 +60,8 @@ public class ConvertImageCommand implements ConsoleCommand {
         Grid<CharacterCell> convertedImage = imageConverter.convert(image, buildConfiguration());
 
         String result = String.join("", convertedImage.cells().stream()
-                .map(cell -> Cell.of(cell, cell.getValue().getCharacter()))
-                .map(cell -> Cell.of(cell, String.valueOf(cell.getValue())))
-                .map(cell -> Cell.of(cell, cell.getValue() + ((cell.getX() == convertedImage.getWidth() - 1) ? "\n" : "")))
+                .map(cell -> Cell.of(cell, encodeCharacter(cell.getValue(), palette.getCharacterEncoder())))
+                .map(cell -> appendNewline(cell, convertedImage.getWidth()))
                 .collect(Grid.collector()).values());
 
         System.out.println(result);
@@ -75,5 +78,19 @@ public class ConvertImageCommand implements ConsoleCommand {
                 .font(new Font("Courier New", Font.PLAIN, 12))
                 .palette(palette.getPalette())
                 .build();
+    }
+
+    private String encodeCharacter(CharacterCell cell, CharacterEncoder characterEncoder) {
+        return characterEncoder.encode(cell.getCharacter(), cell.getForegroundColor(), cell.getBackgroundColor());
+    }
+
+    private Cell<String> appendNewline(Cell<String> cell, int lineLength) {
+        String result = cell.getValue();
+
+        if (cell.getX() + 1 == lineLength) {
+            result += RESET_NEWLINE;
+        }
+
+        return Cell.of(cell, result);
     }
 }
